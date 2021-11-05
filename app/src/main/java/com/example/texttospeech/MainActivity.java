@@ -15,10 +15,8 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -44,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
         final Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+//        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
 
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
@@ -83,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 micButton.setImageResource(R.drawable.ic_mic_black_off);
                 ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                     editText.setText(data.get(0));
+//                    startRecording(speechRecognizerIntent);
             }
 
             @Override
@@ -103,14 +103,16 @@ public class MainActivity extends AppCompatActivity {
                     speechRecognizer.stopListening();
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-                    micButton.setImageResource(R.drawable.ic_mic_black_24dp);
-                    speechRecognizer.startListening(speechRecognizerIntent);
+                    startRecording(speechRecognizerIntent);
                 }
                 return false;
             }
         });
+    }
 
-
+    private void startRecording(final Intent speechRecognizerIntent) {
+        micButton.setImageResource(R.drawable.ic_mic_black_24dp);
+        speechRecognizer.startListening(speechRecognizerIntent);
     }
 
     @Override
